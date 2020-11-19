@@ -12,3 +12,6 @@
 !/app/.vscode/launch.json
 !/app/.vscode/extensions.json
 /app/_site/
+/app/gradle/
+/app/.gradle/
+/app/bin/
