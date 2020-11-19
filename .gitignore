@@ -15,3 +15,4 @@
 /app/gradle/
 /app/.gradle/
 /app/bin/
+/app/build/
