@@ -160,7 +160,7 @@ jar 빌드 → 도커이미지 빌드 → 도커 push
 - scale in/out
 
     ```bash
-    ./shctl.sh k was <Replicas 개수>
+    ./shctl.sh k was scale <Replicas 개수>
 
     # 예시
     ./shctl.sh k was scale 5
