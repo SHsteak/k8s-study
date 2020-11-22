@@ -41,13 +41,15 @@
     sudo chmod 777 -R /Data
     ```
 
-3. NFS
+3. NFS 디렉토리 설정
 
     ```bash
     # 아래 IP는 수정이 필요할 수도 있습니다.
     sudo >> cat /etc/exports <<EOF
     /Data/mysql 192.168.*.*(rw,sync,no_root_squash)
     EOF
+
+    sudo systemctl restart nfs-server && systemctl restart rpcbind
     ```
 
 4. 확인
