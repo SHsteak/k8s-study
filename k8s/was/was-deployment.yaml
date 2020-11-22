@@ -28,6 +28,14 @@ spec:
     spec:
       containers:
       - name: was
-        image: choshsh/spring-petclinic-data-jdbc:1
+        image: choshsh/spring-petclinic-data-jdbc:latest
         ports:
-        - containerPort: 8080
+        - name: http
+          containerPort: 8080
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /manage/health/readiness
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 10
