@@ -7,14 +7,14 @@ echo '#############'
 echo '### Build jar'
 echo '#############'
 echo ''
-docker-compose -f "$PWD"/app/docker-compose.yml run --rm gradle gradle build
+docker-compose run --rm gradle gradle build
 
 echo '' && echo '' && echo ''
 echo '######################'
 echo '### Build docker image'
 echo '######################'
 echo ''
-docker build -t $dockerName "$PWD"/app
+docker build -t $dockerName .
 
 echo '' && echo '' && echo ''
 echo '##################################'
