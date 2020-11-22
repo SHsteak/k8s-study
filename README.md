@@ -31,7 +31,7 @@
     ```bash
     sudo yum install nfs-utils -y
 
-    systemctl enable --now nfs-server && systemctl enable --enable rpcbind
+    systemctl enable --now nfs-server && systemctl enable --now rpcbind
     ```
 
 2. 데이터를 저장할 디렉토리 생성
