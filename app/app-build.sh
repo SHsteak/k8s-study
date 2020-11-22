@@ -1,6 +1,24 @@
 #! /bin/bash
+
+echo '' && echo '' && echo ''
+echo '#############'
+echo '### Build jar'
+echo '#############'
+echo ''
 docker-compose run --rm gradle gradle build
-#version=$(expr $shver + 1)
-docker build -t was:latest .
-#export shver=$version
+
+echo '' && echo '' && echo ''
+echo '######################'
+echo '### Build docker image'
+echo '######################'
+echo ''
+docker build -t choshsh/spring-petclinic-data-jdbc:latest .
+
+echo '' && echo '' && echo ''
+echo '##################################'
+echo '### Push docker iamge to dockerhub'
+echo '##################################'
+echo ''
+docker push choshsh/spring-petclinic-data-jdbc:latest
+
 exit 0
