@@ -11,7 +11,6 @@ spec:
   selector:
     app: mysql
     tier: mysql
-    #  externalIPs: ['192.168.220.130']
 ---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
