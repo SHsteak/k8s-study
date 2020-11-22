@@ -1,6 +1,6 @@
 # 목표
 
-쿠버네티스에서 [spring-petclinic-data-jdbc](https://github.com/spring-petclinic/spring-petclinic-data-jdbc)를 서비스
+웹 어플리케이션 [spring-petclinic-data-jdbc](https://github.com/spring-petclinic/spring-petclinic-data-jdbc)을 kubernetes 환경에서 실행
 
 # 환경
 
@@ -45,7 +45,9 @@
 
     ```bash
     # 아래 IP는 수정이 필요할 수도 있습니다.
+    sudo >> cat /etc/exports <<EOF
     /Data/mysql 192.168.*.*(rw,sync,no_root_squash)
+    EOF
     ```
 
 4. 확인
@@ -93,14 +95,14 @@ sh 스크립트로 최초 1회 변경 후에는 직접 파일을 찾아 변경�
     # /etc/hosts 파일에 등록
     sudo cat >> /etc/hosts <<EOF
     <ip>   <도메인명>
-    <<EOF
+    EOF
 
     # 예시
     ./shctl.sh set ingressDomain www.choshsh.com
 
     sudo cat >> /etc/hosts <<EOF
     192.168.220.130   www.choshsh.com
-    <<EOF
+    EOF
     ```
 
 4. 쿠버네티스 퍼시스턴트 볼륨에 NFS 설정
