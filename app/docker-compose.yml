@@ -8,11 +8,3 @@ services:
       - "./:/home/gradle/project"
       - "./.gradle-caches:/home/gradle/.gradle/caches"
     working_dir: "/home/gradle/project"
-  docker-dind:
-    image: docker:dind
-    privileged: true
-    volumes:
-      - ".:/tmp/project"
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "/var/lib/docker:/var/lib/docker"
-    working_dir: /tmp/project
