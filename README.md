@@ -142,7 +142,7 @@ sh 스크립트로 최초 1회 변경 후에는 직접 파일을 찾아 변경�
 ## 어플리케이션과 도커이미지 빌드
 
 ```bash
-./shctl.sh k build
+./shctl.sh build
 ```
 
 - 최초 실행 시, gradle 도커이미지가 없다면 pull이 실행
