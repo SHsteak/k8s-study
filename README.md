@@ -31,7 +31,7 @@
     ```bash
     sudo yum install nfs-utils -y
 
-    systemctl enable --now nfs-server && systemctl enable --now rpcbind
+    sudo systemctl enable --now nfs-server && sudo systemctl enable --now rpcbind
     ```
 
 2. 데이터를 저장할 디렉토리 생성
@@ -49,7 +49,7 @@
     /Data/mysql 192.168.*.*(rw,sync,no_root_squash)
     EOF
 
-    sudo systemctl restart nfs-server && systemctl restart rpcbind
+    sudo systemctl restart nfs-server && sudo systemctl restart rpcbind
     ```
 
 4. 확인
@@ -57,7 +57,7 @@
     ```bash
     sudo yum install showmount -y
 
-    sudo showmount -e localhost
+    showmount -e localhost
 
     # 출력
     Export list for localhost:
@@ -75,10 +75,11 @@ sh 스크립트로 최초 1회 변경 후에는 직접 파일을 찾아 변경�
     ```
 
 2. 도커 이미지명:태그 설정
+    - 영향 받는 파일
 
-    `./app/app-build.sh`
+        `./app/app-build.sh`
 
-    `./k8s/was/was-deployment.yaml`
+        `./k8s/was/was-deployment.yaml`
 
     ```bash
     ./shctl.sh set imageName <이미지명>:<태그>
@@ -88,8 +89,9 @@ sh 스크립트로 최초 1회 변경 후에는 직접 파일을 찾아 변경�
     ```
 
 3. 쿠버네티스 ingress host 설정
+    - 영향 받는 파일
 
-    `./k8s/web/nginx-ingress.yaml`
+        `./k8s/web/nginx-ingress.yaml`
 
     ```bash
     ./shctl.sh k set ingressDomain <도메인명>
@@ -108,8 +110,9 @@ sh 스크립트로 최초 1회 변경 후에는 직접 파일을 찾아 변경�
     ```
 
 4. 쿠버네티스 퍼시스턴트 볼륨에 NFS 설정
+    - 영향 받는 파일
 
-    `./k8s/storage/mysql-pv.yaml`
+        `./k8s/storage/mysql-pv.yaml`
 
     ```bash
     ./shctl.sh set pvNfs <ip> <nfs-dir-path>
@@ -142,12 +145,10 @@ sh 스크립트로 최초 1회 변경 후에는 직접 파일을 찾아 변경�
 ./shctl.sh k build
 ```
 
-최초 실행 시, gradle 도커이미지가 없다면 pull이 실행
-
-최초 빌드 시 속도가 많이 느리지만,
+- 최초 실행 시, gradle 도커이미지가 없다면 pull이 실행
+- 최초 빌드 시 속도가 많이 느리지만,
 2회부터는 `./app/.gradle-caches`를 gradle 이미지에 bind mount하여 속도 향상
-
-jar 빌드 → 도커이미지 빌드 → 도커 push
+- jar 빌드 → 도커이미지 빌드 → 도커 push
 
 ## kubernetes - 어플리케이션 실행
 
