@@ -14,5 +14,8 @@
 /app/_site/
 /app/gradle/
 /app/.gradle/
+/app/.gradle-caches/
 /app/bin/
 /app/build/
+/app/.mvn/
+/app/.vscode/
