@@ -33,6 +33,11 @@ spec:
         ports:
         - name: http
           containerPort: 8080
+        volumeMounts:
+        - name: log-data
+          mountPath: /tmp/logs
+        - name: tz-config
+          mountPath: /etc/localtime
         readinessProbe:
           httpGet:
             path: /manage/health/readiness
@@ -55,3 +60,26 @@ spec:
           failureThreshold: 6
           periodSeconds: 10
 
+      - name: fluentd
+        image: choshsh/fleuntd-elasticsearch
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 24224
+        volumeMounts:
+        - name: log-data
+          mountPath: /tmp/logs
+        - name: fluentd-config-volume
+          mountPath: /fluentd/etc/
+          readOnly: true
+          
+      volumes:
+      - name: log-data
+        emptyDir: {}
+      - name: fluentd-config-volume
+        configMap:
+          name: fluentd-config
+      - name: tz-config
+        hostPath:
+          path: /usr/share/zoneinfo/Europe/Prague
+          type: File      
