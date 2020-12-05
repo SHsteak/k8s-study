@@ -29,6 +29,7 @@ spec:
       containers:
       - name: was
         image: choshsh/spring-petclinic-data-jdbc:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - name: http
           containerPort: 8080
