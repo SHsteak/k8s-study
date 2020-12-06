@@ -61,7 +61,7 @@ spec:
           periodSeconds: 10
 
       - name: fluentd
-        image: choshsh/fleuntd-elasticsearch
+        image: choshsh/fluentd-elasticsearch:latest
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -83,3 +83,38 @@ spec:
         hostPath:
           path: /usr/share/zoneinfo/Europe/Prague
           type: File      
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-config
+data:
+  fluent.conf: |
+    <source>
+      @type tail
+      path /tmp/logs/app.log
+      pos_file /tmp/logs/app.log.pos
+      tag was.log
+      <parse>
+        @type none
+      </parse>
+    </source>
+    <match **>
+      @type copy
+      <store>
+        @type elasticsearch
+        host elasticsearch-svc
+        port 9200
+        logstash_format true
+        logstash_prefix fluentd
+        logstash_dateformat %Y%m%d
+        include_tag_key true
+        type_name was_log
+        tag_key @log_name
+        flush_interval 1s
+      </store>
+      <store>
+        @type stdout
+      </store>
+    </match>
+
