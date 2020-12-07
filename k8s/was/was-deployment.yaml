@@ -30,6 +30,7 @@ spec:
       - name: was
         image: choshsh/spring-petclinic-data-jdbc:latest
         imagePullPolicy: IfNotPresent
+        #imagePullPolicy: Always
         ports:
         - name: http
           containerPort: 8080
@@ -38,6 +39,7 @@ spec:
           mountPath: /tmp/logs
         - name: tz-config
           mountPath: /etc/localtime
+          readOnly: true
         readinessProbe:
           httpGet:
             path: /manage/health/readiness
