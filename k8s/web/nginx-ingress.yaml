@@ -41,3 +41,14 @@ spec:
             name: "was-service"
             port:
               number: 8080
+  - host: www.choshshlog.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: "kibana-svc"
+            port:
+              number: 5601
+              
