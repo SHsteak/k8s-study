@@ -8,7 +8,7 @@ spec:
   ports:
     - name: was
       port: 8080
-  type: LoadBalancer
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -29,9 +29,17 @@ spec:
       containers:
       - name: was
         image: choshsh/spring-petclinic-data-jdbc:latest
+        imagePullPolicy: IfNotPresent
+        #imagePullPolicy: Always
         ports:
         - name: http
           containerPort: 8080
+        volumeMounts:
+        - name: log-data
+          mountPath: /tmp/logs
+        - name: tz-config
+          mountPath: /etc/localtime
+          readOnly: true
         readinessProbe:
           httpGet:
             path: /manage/health/readiness
@@ -53,4 +61,62 @@ spec:
             - /tmp/healthy
           failureThreshold: 6
           periodSeconds: 10
+
+      - name: fluentd
+        image: choshsh/fluentd-elasticsearch:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 24224
+        volumeMounts:
+        - name: log-data
+          mountPath: /tmp/logs
+        - name: fluentd-config-volume
+          mountPath: /fluentd/etc/
+          readOnly: true
+          
+      volumes:
+      - name: log-data
+        emptyDir: {}
+      - name: fluentd-config-volume
+        configMap:
+          name: fluentd-config
+      - name: tz-config
+        hostPath:
+          path: /usr/share/zoneinfo/Asia/Seoul
+          type: File      
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-config
+data:
+  fluent.conf: |
+    <source>
+      @type tail
+      path /tmp/logs/app.log
+      pos_file /tmp/logs/app.log.pos
+      tag was.log
+      <parse>
+        @type none
+      </parse>
+    </source>
+    <match **>
+      @type copy
+      <store>
+        @type elasticsearch
+        host elasticsearch-svc
+        port 9200
+        logstash_format true
+        logstash_prefix fluentd
+        logstash_dateformat %Y%m%d
+        include_tag_key true
+        type_name was_log
+        tag_key @log_name
+        flush_interval 1s
+      </store>
+      <store>
+        @type stdout
+      </store>
+    </match>
 
