@@ -1,6 +1,8 @@
 # 목표
 
-웹 어플리케이션 [spring-petclinic-data-jdbc](https://github.com/spring-petclinic/spring-petclinic-data-jdbc)을 kubernetes 환경에서 실행
+- 웹 어플리케이션 [spring-petclinic-data-jdbc](https://github.com/spring-petclinic/spring-petclinic-data-jdbc)을 kubernetes 환경에서 실행
+- 모니터링 / 로그 수집 학습
+- jenkins로 CI/CD 학습
 
 # 환경
 
